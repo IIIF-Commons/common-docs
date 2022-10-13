@@ -1,0 +1,10 @@
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'IIIF Commons repository'
+        required: true
+      branch:
+        description: 'Branch'
+        required: true
+        default: 'main'
