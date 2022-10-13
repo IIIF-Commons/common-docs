@@ -10,13 +10,19 @@ const execa = require('execa');
 const path = require('path');
 
 const branch = argv.branch || main;
-const repo = argv.repo;
+const _repo = (argv.repo || '').toLowerCase();
 
-if (!repo) {
+if (!_repo) {
   throw new Error('No repository');
 }
 
-async function main() {
+if (!_repo.indexOf('/') !== -1 && _repo.startsWith(`IIIF-Commons/`)) {
+  throw new Error('Invalid repository');
+}
+
+const repo = _repo.replace(/iiif-commons\//, '');
+
+  async function main() {
   log`Updating documentation for ${`iiif-commons/${repo}`} on branch ${branch}\n`;
 
   const configUrl = `https://raw.githubusercontent.com/IIIF-Commons/${repo}/${branch}/docs/config.yaml`;
