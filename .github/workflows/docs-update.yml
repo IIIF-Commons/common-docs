@@ -1,10 +1,32 @@
+name: Update documentation
+
 on:
   workflow_dispatch:
     inputs:
-      repository:
+      repo:
         description: 'IIIF Commons repository'
         required: true
       branch:
         description: 'Branch'
         required: true
         default: 'main'
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      # Then checkout dependencies, this is branch we are rebasing.
+      - uses: actions/checkout@v2
+        with:
+          ref: 'dependencies'
+          fetch-depth: 0
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout main
+          node ./scripts/update-docs.js --ci --branch=${{ github.event.inputs.branch }} --repo=${{ github.event.inputs.repo }}
+        continue-on-error: true
+
+      - run: git push origin main --force-with-lease
+        continue-on-error: true
