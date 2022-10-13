@@ -56,6 +56,7 @@ jobs:
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.PAT_TOKEN_STATUS_UPDATE }}
           script: |
             github.rest.checks.update({
               owner: 'IIIF-Commons',
