@@ -45,8 +45,8 @@ jobs:
       - run: yarn install --frozen-lockfile --non-interactive
 
       - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name iiif-commons-documentation-updater[bot]
+          git config user.email 247822+iiif-commons-documentation-updater[bot]@users.noreply.github.com
           git checkout main
           node ./scripts/update-docs.js --ci --branch=${{ github.event.inputs.branch }} --repo=${{ github.event.inputs.github_repository }}
 
