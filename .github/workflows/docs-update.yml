@@ -60,7 +60,7 @@ jobs:
             github.rest.checks.update({
               owner: 'IIIF-Commons',
               repo: '${{ github.event.inputs.github_repository }}',
-              check_run_id: '${{ github.events.inputs.check_id }}',
+              check_run_id: '${{ github.event.inputs.check_id }}',
               status: 'completed',
               conclusion: 'success',
             })
