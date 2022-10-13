@@ -53,10 +53,17 @@ jobs:
       - run: git push origin main --force-with-lease
         continue-on-error: true
 
+      - name: Obtain GitHub App Installation Access Token
+        id: githubAppAuth
+        run: |
+          TOKEN="$(npx obtain-github-app-installation-access-token@1.1.0 ci ${{ secrets.GH_APP_CREDENTIALS_TOKEN }})"
+          echo "::add-mask::$TOKEN"
+          echo "::set-output name=token::$TOKEN"
+
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.PAT_TOKEN_STATUS_UPDATE }}
+          github-token: ${{ steps.githubAppAuth.outputs.token }}
           script: |
             github.rest.checks.update({
               owner: 'IIIF-Commons',
