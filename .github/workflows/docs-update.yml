@@ -12,13 +12,13 @@ on:
         default: 'main'
 
 jobs:
-  rebase:
+  update-docs:
     runs-on: ubuntu-latest
     steps:
       # Then checkout dependencies, this is branch we are rebasing.
       - uses: actions/checkout@v2
         with:
-          ref: 'dependencies'
+          ref: 'main'
           fetch-depth: 0
 
       - run: |
