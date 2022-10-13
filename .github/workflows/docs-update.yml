@@ -52,3 +52,16 @@ jobs:
 
       - run: git push origin main --force-with-lease
         continue-on-error: true
+
+      - name: Trigger Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.checks.update({
+              owner: 'IIIF-Commons',
+              repo: 'common-docs',
+              check_run_id: '${{ github.events.input.check_id }}',
+              status: 'completed',
+              conclusion: 'success',
+            })
+
