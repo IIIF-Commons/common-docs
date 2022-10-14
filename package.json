@@ -27,6 +27,7 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.1.0",
     "@tsconfig/docusaurus": "^1.0.5",
+    "symlink-support": "file:plugins/symlink-support",
     "chalk": "4.1.0",
     "execa": "5",
     "typescript": "^4.7.4",
