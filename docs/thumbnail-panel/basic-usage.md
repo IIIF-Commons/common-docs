@@ -1,16 +1,85 @@
 # Basic Usage
 
-# Installation
+For basic HTML integration as a web component.
 
-```bash
-npm i @iiif/thumbnail-panel
+### Web Component
+
+```html
+<script src="https://www.unpkg.com/@iiif/thumbnail-panel/dist/web-components/index.umd.js"></script>
 ```
 
-A consuming environment for developing is available via the `src/dev.tsx` component.
+### Stylesheet
 
-## Usage
+```html
+<link rel="stylesheet" href="https://www.unpkg.com/@iiif/thumbnail-panel/dist/style.css"></link>
+```
 
-The app will export React components, and also a vanilla JavaScript bundled version (coming soon).
+## Example
+
+```html
+<html>
+  <head>
+    <title>IIIF Thumbnail Panel</title>
+    <meta charset="UTF-8" />
+     <!-- Reference Thumbnail Panel basic styling from CDN -->
+    <link rel="stylesheet" href="https://www.unpkg.com/@iiif/thumbnail-panel/dist/style.css"></link>
+  </head>
+  <body>
+    <!-- Import Thumbnail Panel from CDN -->
+    <script src="https://www.unpkg.com/@iiif/thumbnail-panel/dist/web-components/index.umd.js"></script>
+
+    <!-- Simple navigation -->
+    <nav>
+      <button id="tp-prev">Previous</button>
+      <button id="tp-next">Next</button>
+    </nav>
+
+    <!-- Web component -->
+    <thumbnail-panel
+      id="tp"
+      iiif-content="https://iiif-commons.github.io/fixtures/examples/thumbnail_panel/non_paged_at_end/v2/manifest.json"
+    ></thumbnail-panel>
+
+    <!-- Our own custom javascript to handle events -->
+    <script>
+      const tp = document.getElementById("tp");
+      const nextButton = document.getElementById("tp-next");
+      const prevButton = document.getElementById(
+        "tp-prev"
+      );
+
+      tp.addEventListener("resource-changed", async (e) => {
+        const { resourceIds } = e.detail;
+
+        nextButton.setAttribute("data-id", resourceIds.next);
+        if (!resourceIds.next) {
+          nextButton.setAttribute("disabled", true);
+        } else {
+          nextButton.removeAttribute("disabled");
+        }
+
+        prevButton.setAttribute("data-id", resourceIds.previous);
+        if (!resourceIds.previous) {
+          prevButton.setAttribute("disabled", true);
+        } else {
+          prevButton.removeAttribute("disabled");
+        }
+      });
+
+      nextButton.addEventListener("click", (e) => {
+        const next = e.target.getAttribute("data-id");
+        if (next !== "null") tp.setAttribute("current-resource-id", next);
+      });
+
+      prevButton.addEventListener("click", (e) => {
+        const prev = e.target.getAttribute("data-id");
+        if (prev !== "null") tp.setAttribute("current-resource-id", prev);
+      });
+    </script>
+
+  </body>
+</html>
+```
 
 ### React
 
@@ -20,19 +89,6 @@ The `ThumbnailPanel` component can be used in a _controlled_ or _uncontrolled_ w
 
 ```tsx
 import { ThumbnailPanel } from "@iiif/thumbnail-panel";
-
-...
-<ThumbnailPanel
-    currentResourceId="someResourceId"
-    iiifContent="https://iiif-commons.github.io/fixtures/examples/thumbnail_panel/non_paged_at_end/v2/manifest.json"
-    onResourceChanged={(resourceId?: string) => {
-        console.log("resourceId", resourceId);
-        // Now you can pass around the current thumbnail item to
-        // other parts of your app which need to know about it.
-    }}
-    orientation="vertical"
-/>
-
 ```
 
 #### Uncontrolled
