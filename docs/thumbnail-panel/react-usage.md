@@ -49,7 +49,8 @@ const { isEnd, isStart, next, prev } = useThumbnailPanelContext();
 ## Example
 
 ```tsx
-import { IIIFContentProvider, ThumbnailPanel } from "@iiif/thumbnail-panel";
+import { 
+  IIIFContentProvider, ThumbnailPanel, useThumbnailPanelContext } from "@iiif/thumbnail-panel";
 
 function MyApp() {
   return (
